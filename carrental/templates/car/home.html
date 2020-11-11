@@ -11,7 +11,7 @@
   <div>
     {% for carlist in my_locations %}
       <div >
-        <a href="{% url 'search'   %}">
+        <a href="{% url 'carlist' carlist.id  %}">
             <div >
                 <img src= "{% static 'car/images/333921.jpg' %}" alt="Uh Oh,didn't show!">
             </div>

@@ -7,6 +7,16 @@
 
 {% block content %}
 
-<h3>Welcome to Loggin Page</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+      
+        <input type="submit" name="btn" value="login">
+   </form>
+   <br>
+   <b><span>{{status}}</span></b>
 
 {% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+
+{% extends "car/base.html" %}
+{% load static %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<h1><center>Rent Car</center></h1>
+  <div>
+    {% for carlist in my_locations %}
+      <div >
+        <a href="{% url 'search'   %}">
+            <div >
+                <img src= "{% static 'car/images/333921.jpg' %}" alt="Uh Oh,didn't show!">
+            </div>
+            <div >
+              <h2>{{ carlist.name }}
+              <br>
+              <span>{{ carlist.no_of_car }}</span>
+            </h2>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

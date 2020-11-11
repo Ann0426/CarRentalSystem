@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% extends "car/base.html" %}
+
+{% block title %} Search {% endblock %}
+
+{% block content %}
+   
+     <h1><center>{{location_name}}</center></h1>
+   <table>
+        <tr>
+          <th>No.</th>
+          <th>Model</th>
+          <th>Make</th>
+          <th>Year</th>
+        
+        </tr>
+        {% for car in cars  %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ car.Model }}</td>
+          <td>{{ car.Make }}</td>
+          <td>{{ car.year }}</td>
+         
+        </tr>
+        {% endfor %}
+      </table> 
+    
+{% endblock %}

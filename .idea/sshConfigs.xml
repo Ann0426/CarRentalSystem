@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="ec2-54-236-17-138.compute-1.amazonaws.com" id="a14517c3-4b63-46ce-abd5-810b6516d36c" keyPath="C:\Users\ann\Desktop\Project\DBProject.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" />
+    </configs>
+  </component>
+</project>

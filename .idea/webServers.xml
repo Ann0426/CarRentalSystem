@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f79516b0-eea1-448d-b6ee-f475aba10642" name="dbproject">
+        <fileTransfer rootFolder="/home/ubuntu/CarRentalSystem" accessType="SFTP" host="ec2-54-236-17-138.compute-1.amazonaws.com" port="22" sshConfigId="a14517c3-4b63-46ce-abd5-810b6516d36c" sshConfig="ubuntu@ec2-54-236-17-138.compute-1.amazonaws.com:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

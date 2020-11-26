@@ -2,25 +2,30 @@ from django.urls import path
 from car import views
 from django.conf import settings
 from django.conf.urls import url
+
 from django.conf.urls.static import static
 
 from car.views import CarDetailsView
 from car.views import NewBookingView
 from car.views import HomeView
+from django.contrib.auth import views as auth_views
+
 
 
 urlpatterns = [
     path('', views.home,name="home"),
     path('about/',views.about,name="about"),
-  
-    path('loggin/',views.loggin,name="loggin"),
+    path('login/', auth_views.LoginView.as_view(template_name="car/login.html"), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page="car/home.html"), name='logout'),
+    # path('logout/$', auth_views.LogoutView(template_name="logged_out.html"), name='logout'),
+    # path('^logout/$', auth_views.LogoutView, {'next_page': 'car/home.html'}, name='logout'),
+
     path('signUp/',views.signUp,name="signUp"),
-    path('carlist/<int:id>',views.search,name="carlist"),
-
-    url(r'^$', HomeView.as_view(), name='homes'),
+    path('carlist/<int:id>',views.search,name="carlist")]
     
-    url(r'^car/(?P<pk>\d+)/$', CarDetailsView.as_view(), name='car_details'),
-
-    url(r'^booking/(?P<car_pk>\d+)/$', NewBookingView.as_view(), name='new_booking'),
+         # url(r'^$', HomeView.as_view(), name='homes'),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # url(r'^car/(?P<pk>\d+)/$', CarDetailsView.as_view(), name='car_details'),
+
+    # url(r'^booking/(?P<car_pk>\d+)/$', NewBookingView.as_view(), name='new_booking'),
+# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)]

@@ -3,20 +3,14 @@
 
 {% extends "car/base.html" %}
 
-{% block title %} Loggin {% endblock %}
+
+{% block title %}Login{% endblock %}
 
 {% block content %}
-
-
-    <form method="POST">
-        {% csrf_token %}
-        <table>
-            {{form.as_table}}
-        </table>
-      
-        <input type="submit" name="btn" value="login">
-   </form>
-   <br>
-   <b><span>{{status}}</span></b>
-
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
 {% endblock %}

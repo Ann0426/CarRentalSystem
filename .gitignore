@@ -1,4 +1,4 @@
 *.pem
-.key
-.txt
+*.key
+config.txt
 

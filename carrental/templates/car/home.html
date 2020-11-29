@@ -8,7 +8,7 @@
 {% block content %}
 
 <h1><center>Rent Car</center></h1>
-  <div>
+  {% comment %} <div>
     {% for carlist in my_locations %}
       <div >
         <a href="{% url 'carlist' carlist.id  %}">
@@ -25,5 +25,37 @@
       </div>
     {% endfor %}
   </div>
+   {% endcomment %}
+  
+  <h2>Search</h2>
+  <form action="{% url 'search_results' %}" name='q'>
+    <tr>
+      <select value='Brooklyn'>
+        <option disable='false' selected>--select location--</option>
+        {% for location in my_locations%}
+        <option>{{location}} </option>
+        {% endfor %}
+      </select>
+    </tr>
+    </br>
+    <tr>
+      <td> date from: </td>
+      {% comment %} <td> <input name="w" type="text" placeholder="Search..."> </td> {% endcomment %}
+      <input name="w" type="date" id="start" name="trip-start"
+       value="2020-11-28"
+       min="2020-01-01" max="2022-12-31">
+    </tr>
+    </br>
+    <tr>
+      <td> date to:</td>
+      <input name="r" type="date" id="start" name="trip-start"
+       value="2020-11-28"
+       min="2020-01-01" max="2022-12-31">
+    </tr>
+    </br>
+    <input type="submit" value="Search" action="{% url 'search_results' %}" name='q'>
+
+  </form>
+
 
 {% endblock %}

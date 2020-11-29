@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% comment %} {% extends "base.html" %}
 
 {% block content %}
     {% if booking_success %}
@@ -11,4 +11,4 @@
     <p>${{ object.daily_rent }} / day</p>
 
     <a href="{% url 'new-booking' car_pk=object.pk %}">Book Now</a>
-{% endblock %}
+{% endblock %} {% endcomment %}

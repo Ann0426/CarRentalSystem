@@ -8,14 +8,16 @@ from car.signinform import SignUpForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from car.utils import get_office_locations, create_connection
 
+# from django.views.generic import CreateView
+# from django.views.generic import DetailView
+from django.views.generic import TemplateView, ListView
+# from car.models import Booking
+# from car.models import Car
+from car.models import City
+from django.db.models import Q 
 
-from django.views.generic import CreateView
-from django.views.generic import DetailView
-from django.views.generic import TemplateView
-
-from car.models import Booking
-from car.models import Car
 my_locations=[
         {"id":1,"name":"SF","no_of_car":4},
         {"id":2,"name":"LA","no_of_car":2}
@@ -34,7 +36,15 @@ users = [
         ]
     
 def home(request):
-    return render(request,'car/home.html',{"my_locations":my_locations})
+    if request.method == 'GET':
+        location_list =  get_office_locations(create_connection())
+        office_list = [i['city']+', '+i['address'] for i in location_list]
+    
+    return render(request,'car/home.html',{"my_locations":office_list})
+
+    
+       
+       
 
 def about(request):
     return render(request,'car/about.html')
@@ -68,62 +78,86 @@ def search(request,id):
             cars.append(car)
     
     return render(request,'car/search.html',{"cars":cars,"location_name": location_name})
+class SearchResultsView(ListView):
+    model = City
+    template_name = 'car/search_results.html'
+    # location_list =  get_office_locations(create_connection())
+    # office_list = [i['city']+', '+i['address'] for i in location_list]
+
+    def get_queryset(self): # new
+        
+        query = self.request.GET.get('q')
+        print(query)
+        if not query: query = ''
+        object_list = City.objects.filter(
+            Q(name__icontains=query) | Q(state__icontains=query)
+        )
+        print(object_list)
+        return object_list
+ 
+    
+    # def showlocations(self, req):
+    #     location_list =  get_office_locations(create_connection())
+    #     office_list = [i['city']+', '+i['address'] for i in location_list]
+    #     return render(req,'home.html', office_list)
+    
+
 ############## refer to others
-class HomeView(TemplateView):
-    template_name = 'car/homes.html'
+# class HomeView(TemplateView):
+#     template_name = 'car/homes.html'
 
-    def get_context_data(self, **kwargs):
-        ctx = super(HomeView, self).get_context_data(**kwargs)
+#     def get_context_data(self, **kwargs):
+#         ctx = super(HomeView, self).get_context_data(**kwargs)
 
-        cars = Car.objects.filter(is_available=True)
-        ctx['cars'] = cars
+#         cars = Car.objects.filter(is_available=True)
+#         ctx['cars'] = cars
 
-        return ctx
-
-
-class CarDetailsView(DetailView):
-    template_name = 'car/car_details.html'
-    model = Car
-
-    def get_context_data(self, **kwargs):
-        ctx = super(CarDetailsView, self).get_context_data(**kwargs)
-        ctx['booking_success'] = 'booking-success' in self.request.GET
-
-        return ctx
+#         return ctx
 
 
-class NewBookingView(CreateView):
-    model = Booking
-    fields = [
-        'customer_name', 'customer_email', 'customer_phone_number',
-        'booking_start_date', 'booking_end_date', 'booking_message'
-    ]
+# class CarDetailsView(DetailView):
+#     template_name = 'car/car_details.html'
+#     model = Car
 
-    template_name = 'car/new_booking.html'
+#     def get_context_data(self, **kwargs):
+#         ctx = super(CarDetailsView, self).get_context_data(**kwargs)
+#         ctx['booking_success'] = 'booking-success' in self.request.GET
 
-    def get_car(self):
-        car_pk = self.kwargs['car_pk']
-        car = Car.objects.get(pk=car_pk)
+#         return ctx
 
-        return car
 
-    def get_context_data(self, **kwargs):
-        ctx = super(NewBookingView, self).get_context_data(**kwargs)
-        ctx['car'] = self.get_car()
+# class NewBookingView(CreateView):
+#     model = Booking
+#     fields = [
+#         'customer_name', 'customer_email', 'customer_phone_number',
+#         'booking_start_date', 'booking_end_date', 'booking_message'
+#     ]
 
-        return ctx
+#     template_name = 'car/new_booking.html'
 
-    def form_valid(self, form):
-        new_booking = form.save(commit=False)
-        new_booking.car = self.get_car()
-        new_booking.is_approved = False
+#     def get_car(self):
+#         car_pk = self.kwargs['car_pk']
+#         car = Car.objects.get(pk=car_pk)
 
-        new_booking.save()
+#         return car
 
-        return super(NewBookingView, self).form_valid(form)
+#     def get_context_data(self, **kwargs):
+#         ctx = super(NewBookingView, self).get_context_data(**kwargs)
+#         ctx['car'] = self.get_car()
 
-    def get_success_url(self):
-        car = self.get_car()
-        car_details_page_url = car.get_absolute_url()
+#         return ctx
 
-        return '{}?booking-success=1'.format(car_details_page_url)
+#     def form_valid(self, form):
+#         new_booking = form.save(commit=False)
+#         new_booking.car = self.get_car()
+#         new_booking.is_approved = False
+
+#         new_booking.save()
+
+#         return super(NewBookingView, self).form_valid(form)
+
+#     def get_success_url(self):
+#         car = self.get_car()
+#         car_details_page_url = car.get_absolute_url()
+
+#         return '{}?booking-success=1'.format(car_details_page_url)

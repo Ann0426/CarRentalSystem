@@ -1,7 +1,7 @@
 import pymysql
 import json
 from cryptography.fernet import Fernet
-
+from datetime import datetime, timedelta
 
 ## Switch to relative path during deployment
 CONFIG = './config.txt'
@@ -43,14 +43,17 @@ def get_office_locations(connection):
         query = 'select * from offices'
         cursor.execute(query)
         result = cursor.fetchall()
+    for i in range(len(result)):
+        result[i]['offices_id'] = int(result[i]['offices_id'])
     return result
 
 
 def get_available_cars(connection, location, type):
     if type == 'all':
-        query = 'select vehicle_id, model, make from vehicles where office_id={} and type={}'.format(location, type)
+        query = 'select vehicle_id, model, make, year from vehicles where office_id={} and availability=1'.format(location, type)
     else:
-        query = 'select vehicle_id, model, make from vehicles where office_id={}'.format(location)
+        query = 'select vehicle_id, model, make from vehicles where office_id={} and availability=1'.format(location)
+    print(query)
     with connection.cursor() as cursor:
         cursor.execute(query)
         result = cursor.fetchall()
@@ -62,3 +65,11 @@ def get_query_response(connection, query):
         cursor.execute(query)
         result = cursor.fetchall()
     return result
+
+
+def get_dates():
+    dates = {
+        'today': str(datetime.date(datetime.now())),
+        'tomorrow': str(datetime.date(datetime.now()) + timedelta(days=1))
+    }
+    return dates

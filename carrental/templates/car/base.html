@@ -12,16 +12,12 @@
   <div class=container>
     <ul class= "nav navbar-nav">
       <li><a class="navbar-brand" href="{% url 'home' %}">Home</a></li>
-      <li><a class="navbar-brand" href="{% url 'carlist' id=1 %}">Search</a></li> 
       {% comment %} <li><a class="navbar-brand" href="{% url 'search_results'  %}">Search Result</a></li>  {% endcomment %}
       <li><a class="navbar-brand" href="{% url 'about' %}">About</a></li>
       <li><a class="navbar-brand" href="{% url 'signUp' %}">Sign-Up</a></li>
       <li><a class="navbar-brand" href="{% url 'login' %}">Login</a></li>
       <li><a class="navbar-brand" href="{% url 'logout' %}">Logout</a></li>
 
-      {% comment %} <li><a class="navbar-brand" href="{% url 'car_details' %}">car_detailsn</a></li>
-      <li><a class="navbar-brand" href="{% url 'homes' %}">homes</a></li>
-      <li><a class="navbar-brand" href="{% url 'new_booking' %}">new_booking</a></li> {% endcomment %}
      
     </ul>
   </div>

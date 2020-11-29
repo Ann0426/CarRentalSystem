@@ -3,23 +3,25 @@ from django.http import HttpResponse
 from django.http import Http404
 import datetime
 # from django.contrib.auth.models import User
-from car.signinform import SignUpForm
+from .signinform import SignUpForm
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from car.utils import get_office_locations, create_connection
-
+from .utils import get_office_locations
+from django.apps import apps
+from .utils import get_dates
+from .utils import get_available_cars
 # from django.views.generic import CreateView
 # from django.views.generic import DetailView
 from django.views.generic import TemplateView, ListView
 # from car.models import Booking
 # from car.models import Car
-from car.models import City
+from .models import City
 from django.db.models import Q 
 
 my_locations=[
-        {"id":1,"name":"SF","no_of_car":4},
+        {"id": 1,"name":"SF","no_of_car":4},
         {"id":2,"name":"LA","no_of_car":2}
     ]
 
@@ -34,20 +36,19 @@ rent_cars = [
 users = [
             {"id": 1, "full_name": "john", "email": "john123@gmail.com", "password": "adminpass"},
         ]
-    
+
+print(apps.get_app_config('car'))
+connection = apps.get_app_config('car').connection
+
 def home(request):
     if request.method == 'GET':
-        location_list =  get_office_locations(create_connection())
-        office_list = [i['city']+', '+i['address'] for i in location_list]
-    
-    return render(request,'car/home.html',{"my_locations":office_list})
+        location_list = get_office_locations(connection)
 
-    
-       
-       
+    return render(request, 'car/home.html', {"my_locations": location_list, "dates": get_dates()})
+
 
 def about(request):
-    return render(request,'car/about.html')
+    return render(request, 'car/about.html')
 
 
 def signUp(request):
@@ -63,21 +64,14 @@ def signUp(request):
     else:
         form = SignUpForm()
     return render(request, 'car/signup.html', {'form': form})
-def search(request,id):
-    cars=[]
-    location_name=''
-    for carlist in my_locations:
-        if(id == carlist['id']):
-            location_name=carlist['name']
 
-    # if len(location_name)==0:
-    #     raise Http404("Such carlist does not exist")
 
-    for car in rent_cars:
-        if(id == car['my_locations_id']):
-            cars.append(car)
-    
-    return render(request,'car/search.html',{"cars":cars,"location_name": location_name})
+def search(request):
+    location = request.GET['location']
+    cars = get_available_cars(connection, location, 'all')
+    return render(request, 'car/search.html', {"cars": cars})
+
+
 class SearchResultsView(ListView):
     model = City
     template_name = 'car/search_results.html'
@@ -88,18 +82,14 @@ class SearchResultsView(ListView):
         
         query = self.request.GET.get('q')
         print(query)
-        if not query: query = ''
+        if not query:
+            query = ''
         object_list = City.objects.filter(
             Q(name__icontains=query) | Q(state__icontains=query)
         )
         print(object_list)
         return object_list
  
-    
-    # def showlocations(self, req):
-    #     location_list =  get_office_locations(create_connection())
-    #     office_list = [i['city']+', '+i['address'] for i in location_list]
-    #     return render(req,'home.html', office_list)
     
 
 ############## refer to others

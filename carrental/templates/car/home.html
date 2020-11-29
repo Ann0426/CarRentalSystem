@@ -33,24 +33,24 @@
       <select value='Brooklyn' name='location'>
         <option disable='false' selected>--select location--</option>
         {% for location in my_locations%}
-        <option>{{location}} </option>
+        <option value={{location.offices_id}}>{{location.city}} </option>
         {% endfor %}
       </select>
     </tr>
     </br>
     <tr>
-      <td> date from: </td>
+      <td> From: </td>
       {% comment %} <td> <input name="w" type="text" placeholder="Search..."> </td> {% endcomment %}
-      <input name="start" type="date" id="start" 
-       value="2020-11-28"
-       min="2020-01-01" max="2022-12-31">
+      <input name="Start" type="date" id="start"
+       value={{dates.today}}
+       min={{dates.today}} max="2022-12-31">
     </tr>
     </br>
     <tr>
-      <td> date to:</td>
-      <input name="end" type="date" id="start" 
-       value="2020-11-28"
-       min="2020-01-01" max="2022-12-31">
+      <td> To: </td>
+      <input name="end" type="date" id="end"
+       value={{dates.tomorrow}}
+       min={{dates.tomorrow}} max="2022-12-31">
     </tr>
     </br>
     <input type="submit" value="Search">

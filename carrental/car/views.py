@@ -37,8 +37,8 @@ users = [
             {"id": 1, "full_name": "john", "email": "john123@gmail.com", "password": "adminpass"},
         ]
 
-print(apps.get_app_config('car'))
 connection = apps.get_app_config('car').connection
+
 
 def home(request):
     if request.method == 'GET':
@@ -51,7 +51,7 @@ def about(request):
     return render(request, 'car/about.html')
 
 
-def signUp(request):
+def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():

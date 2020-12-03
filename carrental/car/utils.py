@@ -58,6 +58,27 @@ def get_available_cars(connection, location, type):
         cursor.execute(query)
         result = cursor.fetchall()
     return result
+def get_car_info(connection,car):
+    query = 'select * from vehicles where vehicle_id = {}'.format(car)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
+def get_car_class_info(connection,type_id):
+    query = 'select rent_charge from vehicle_class where type_id = {}'.format(type_id)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
+def get_coupon_info(connection,coupon_id):
+    query = 'select discount, coupon_id from discounts where coupon_id = {}'.format(coupon_id)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
 
 
 def get_query_response(connection, query):

@@ -4,6 +4,7 @@ from django.http import Http404
 import datetime
 # from django.contrib.auth.models import User
 from .signinform import SignUpForm
+import datetime
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
@@ -11,31 +12,31 @@ from django.shortcuts import render, redirect
 from .utils import get_office_locations
 from django.apps import apps
 from .utils import get_dates
-from .utils import get_available_cars
+from .utils import get_available_cars,get_car_info,get_car_class_info,get_coupon_info
 # from django.views.generic import CreateView
 # from django.views.generic import DetailView
 from django.views.generic import TemplateView, ListView
 # from car.models import Booking
 # from car.models import Car
-from .models import City
-from django.db.models import Q 
+# from django.db.models import Q 
+from django.contrib.auth.models import User
 
-my_locations=[
-        {"id": 1,"name":"SF","no_of_car":4},
-        {"id":2,"name":"LA","no_of_car":2}
-    ]
+# my_locations=[
+#         {"id": 1,"name":"SF","no_of_car":4},
+#         {"id":2,"name":"LA","no_of_car":2}
+#     ]
 
-rent_cars = [
-            {"id": 1, "Model": "yaris", "Make": "toyota", "year": 20,"my_locations_id": 1},
-            {"id": 2, "Model": "yaris", "Make": "toyota", "year": 20, "my_locations_id": 1},
-            {"id": 3, "Model": "yaris", "Make": "toyota", "year":20, "my_locations_id": 1},
-            {"id": 4, "Model": "yaris", "Make": "toyota", "year": 20, "my_locations_id": 1},
-            {"id": 5, "Model": "yaris", "Make": "toyota", "year": 20,"my_locations_id": 2},
-            {"id": 6, "Model": "yaris", "Make": "toyota", "year": 20, "my_locations_id": 2},
-    ]
-users = [
-            {"id": 1, "full_name": "john", "email": "john123@gmail.com", "password": "adminpass"},
-        ]
+# rent_cars = [
+#             {"id": 1, "Model": "yaris", "Make": "toyota", "year": 20,"my_locations_id": 1},
+#             {"id": 2, "Model": "yaris", "Make": "toyota", "year": 20, "my_locations_id": 1},
+#             {"id": 3, "Model": "yaris", "Make": "toyota", "year":20, "my_locations_id": 1},
+#             {"id": 4, "Model": "yaris", "Make": "toyota", "year": 20, "my_locations_id": 1},
+#             {"id": 5, "Model": "yaris", "Make": "toyota", "year": 20,"my_locations_id": 2},
+#             {"id": 6, "Model": "yaris", "Make": "toyota", "year": 20, "my_locations_id": 2},
+#     ]
+# users = [
+#             {"id": 1, "full_name": "john", "email": "john123@gmail.com", "password": "adminpass"},
+#         ]
 
 connection = apps.get_app_config('car').connection
 
@@ -68,29 +69,34 @@ def signup(request):
 
 def search(request):
     location = request.GET['location']
+    print(location)
+    start_date = request.GET['Start']
+    end_date = request.GET['end']
     cars = get_available_cars(connection, location, 'all')
+    print(cars)
+    start_date = start_date.split(' ', 1 )[0] 
+    end_date = end_date.split(' ', 1 )[0]
+    
+
     return render(request, 'car/search.html', {"cars": cars})
 
-
-class SearchResultsView(ListView):
-    model = City
-    template_name = 'car/search_results.html'
-    # location_list =  get_office_locations(create_connection())
-    # office_list = [i['city']+', '+i['address'] for i in location_list]
-
-    def get_queryset(self): # new
+def booking(request):
+        car = request.GET['car']
+        car_info = get_car_info(connection,car)
+        if 'type_id' in car_info[0]:
+            car_rent = get_car_class_info(connection,car_info[0]['type_id'])
+        current_user = request.user
+        print(car_info)
         
-        query = self.request.GET.get('q')
-        print(query)
-        if not query:
-            query = ''
-        object_list = City.objects.filter(
-            Q(name__icontains=query) | Q(state__icontains=query)
-        )
-        print(object_list)
-        return object_list
+        return render(request, 'car/new_booking.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent}  )
+def invoices(request):
+    coupon = request.GET['coupon']
+    coupon_amount = get_coupon_info(connection,coupon)
+    print(coupon_amount)
+    current_user = request.user
+    return render(request, 'car/invoices.html', {"user":current_user, "coupon":coupon_amount})
  
-    
+
 
 ############## refer to others
 # class HomeView(TemplateView):

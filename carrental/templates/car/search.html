@@ -6,23 +6,30 @@
 {% block content %}
    
      <h1><center>Search Result</center></h1>
-   <table>
+   <table  border="3" cellpadding="20">
         <tr>
-          <th>No.</th>
-          <th>Model</th>
-          <th>Make</th>
-          <th>Year</th>
+          <th>No.  </th>
+          <th>id  </th>
+          <th>Model   </th>
+          <th>Make  </th>
+          <th>Year  </th>
         
         </tr>
+        <form action="{% url 'new_booking' %}" name='new_booking'>
         {% for car in cars  %}
         <tr>
-          <td>{{ forloop.counter }}</td>
+          
+          <td><button name = 'car' value={{car.vehicle_id}}>{{ forloop.counter }}</td>
+          <td>{{ car.vehicle_id}}</td>
           <td>{{ car.model }}</td>
           <td>{{ car.make }}</td>
-          <td>{{ car.year }}</td>
+          <td>{{ car.year }}</button></td>
+          
          
         </tr>
         {% endfor %}
       </table> 
+      {% comment %} <input type="submit" value="Proceed to checkout"> {% endcomment %}
+      </form>
     
 {% endblock %} 

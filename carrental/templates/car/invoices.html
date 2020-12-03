@@ -1,0 +1,47 @@
+ {% extends "car/base.html" %}
+
+
+{% block content %}
+ {%for discounts in coupon%}
+    <em>You have successfully created a booking for this car. Someone from our staff will contact you shortly.</em>
+    
+    <table >
+        <tr>
+          <th>User:  </th>
+          <th>{{user.username}} </th>
+        </tr>
+        <tr>
+          <th>Vehicle_id:  </th>
+          <th>{{ car.vehicle_id }}</th>
+        </tr>
+        <tr>
+          <th>Booking date:  </th>
+          <th>{{dates.today}}</th>
+        </tr> 
+        <tr>
+          <th>Coupon id:  </th>
+          <th>{{discounts.coupon_id}}</th>
+         
+
+        </tr>
+        <tr>
+          <th>Coupon discount:  </th>
+         
+          <th>{{discounts.discount}}</th>
+
+        </tr>
+        <tr>
+          <th>total amount:  </th>
+          <th>{{invoice.invoice_amount}}</th>
+        </tr>
+        <tr>
+          <th>last payment date:  </th>
+          <th>{{invoice.pay_due_date}}</th>
+        </tr>
+        
+        
+    </table>
+    {%endfor%}
+    
+
+{% endblock %} 

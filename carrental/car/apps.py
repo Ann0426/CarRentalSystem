@@ -7,7 +7,7 @@ class CarConfig(AppConfig):
 
     def __init__(self, app_name, app_module):
         super(CarConfig, self).__init__(app_name, app_module)
-
+        self.connection = None
 
     def ready(self):
         self.connection = create_connection()

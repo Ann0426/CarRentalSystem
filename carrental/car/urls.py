@@ -13,7 +13,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', home, name="home" ),
-    path('about/', about,name="about"),
+    path('about/', about, name="about"),
     path('login/', auth_views.LoginView.as_view(template_name="car/login.html"), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name="car/logout.html"), name='logout'),
     #path('search/?location=', SearchResultsView.as_view(), name='search_results_temp'),

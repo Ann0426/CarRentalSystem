@@ -64,14 +64,16 @@ def search(request):
 
 
 def booking(request):
-        car = request.GET['car']
-        car_info = get_car_info(connection,car)
-        if 'type_id' in car_info[0]:
-            car_rent = get_car_class_info(connection,car_info[0]['type_id'])
-        current_user = request.user
-        print(car_info)
-        
-        return render(request, 'car/new_booking.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent}  )
+    car = request.GET['car']
+    if request.user.is_authenticated:
+        car_info = get_car_info(connection, car)
+    if 'type_id' in car_info[0]:
+        car_rent = get_car_class_info(connection,car_info[0]['type_id'])
+    current_user = request.user
+    print(car_info)
+    return render(request, 'car/new_booking.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent}  )
+
+
 def invoices(request):
     coupon = request.GET['coupon']
     coupon_amount = get_coupon_info(connection,coupon)

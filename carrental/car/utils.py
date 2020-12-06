@@ -50,11 +50,13 @@ def get_office_locations(connection):
 
 def get_available_cars(connection, location, type):
     if type == 'all':
-        query = 'select * from vehicles JOIN vehicle_class on vehicles.type_id=vehicle_class.type_id ' \
-                'where office_id={} and availability=1'.format(location, type)
+        query = 'select vehicle_id, model, make, year, type, rent_charge from vehicles JOIN vehicle_class on ' \
+                'vehicles.type_id=vehicle_class.type_id where office_id={} and availability=1'\
+            .format(location)
     else:
-        query = 'select * from vehicles JOIN vehicle_class on vehicles.type_id=vehicle_class.type_id ' \
-                'where office_id={} and availability=1'.format(location)
+        query = query = 'select vehicle_id, model, make, year, type, rent_charge from vehicles JOIN vehicle_class on ' \
+                'vehicles.type_id=vehicle_class.type_id where office_id={} and availability=1 and type={}'\
+            .format(location, type)
     print(query)
     with connection.cursor() as cursor:
         cursor.execute(query)

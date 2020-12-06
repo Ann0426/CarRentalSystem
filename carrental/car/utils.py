@@ -50,9 +50,41 @@ def get_office_locations(connection):
 
 def get_available_cars(connection, location, type):
     if type == 'all':
-        query = 'select vehicle_id, model, make, year from vehicles where office_id={} and availability=1'.format(location, type)
+        query = 'select * from vehicles JOIN vehicle_class on vehicles.type_id=vehicle_class.type_id ' \
+                'where office_id={} and availability=1'.format(location, type)
     else:
-        query = 'select vehicle_id, model, make from vehicles where office_id={} and availability=1'.format(location)
+        query = 'select * from vehicles JOIN vehicle_class on vehicles.type_id=vehicle_class.type_id ' \
+                'where office_id={} and availability=1'.format(location)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    for i in range(len(result)):
+        result[i]['model'] = result[i]['model'].title()
+        result[i]['make'] = result[i]['make'].title()
+    return result
+
+
+def get_car_info(connection,car):
+    query = 'select * from vehicles where vehicle_id = {}'.format(car)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
+
+
+def get_car_class_info(connection,type_id):
+    query = 'select rent_charge from vehicle_class where type_id = {}'.format(type_id)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
+
+
+def get_coupon_info(connection,coupon_id):
+    query = 'select discount, coupon_id from discounts where coupon_id = {}'.format(coupon_id)
     print(query)
     with connection.cursor() as cursor:
         cursor.execute(query)
@@ -73,3 +105,10 @@ def get_dates():
         'tomorrow': str(datetime.date(datetime.now()) + timedelta(days=1))
     }
     return dates
+
+
+def insert_dummy_data(connection):
+    query = "insert into discounts values (11, 35, STR_TO_DATE('01/01/2021', '%d/%m/%y'),STR_TO_DATE('01/05/2021', '%d/%m/%y'))"
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+    connection.commit()

@@ -74,10 +74,10 @@ def search(request):
     return render(request, 'car/search.html', {"cars": cars})
 
 def booking(request):
-    
         global car,car_info,car_rent 
         car = request.GET['BOOK']
-        car_info = get_car_info(connection,car)
+        if request.user.is_authenticated:
+            car_info = get_car_info(connection,car)
         if 'type_id' in car_info[0]:
             car_rent = get_car_class_info(connection,car_info[0]['type_id'])
         current_user = request.user
@@ -86,6 +86,7 @@ def booking(request):
         
         return render(request, 'car/new_booking.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent , "start_date":start_date,"end_date":end_date,"location":location,"location2":location2}  )
         
+
 def invoices(request):
     coupon = request.GET['coupon']
     coupon_amount = get_coupon_info(connection,coupon)

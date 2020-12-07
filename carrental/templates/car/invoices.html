@@ -3,6 +3,9 @@
 
 {% block content %}
  {%for discounts in coupon%}
+ {% for car in car %}
+{% comment %} {% for rent in rent %} {% endcomment %}
+
     <em>You have successfully created a booking for this car. Someone from our staff will contact you shortly.</em>
     
     <table >
@@ -13,6 +16,14 @@
         <tr>
           <th>Vehicle_id:  </th>
           <th>{{ car.vehicle_id }}</th>
+        </tr>
+        <tr>
+          <th>From:  </th>
+          <th>{{start_date}}</th>
+        </tr>
+        <tr>
+          <th>To:  </th>
+          <th>{{end_date}}</th>
         </tr>
         <tr>
           <th>Booking date:  </th>
@@ -32,16 +43,18 @@
         </tr>
         <tr>
           <th>total amount:  </th>
-          <th>{{invoice.invoice_amount}}</th>
+          <th>{{total_amount}}</th>
         </tr>
         <tr>
           <th>last payment date:  </th>
-          <th>{{invoice.pay_due_date}}</th>
+          <th>{{end_date}}</th>
         </tr>
         
         
+        
     </table>
-    {%endfor%}
+    {%endfor%} {%endfor%}
+    
     
 
 {% endblock %} 

@@ -28,9 +28,19 @@
    {% endcomment %}
   
   <h2>Search</h2>
-  <form action="{% url 'search_results' %}" name='q'>
+  <form action="{% url 'search_results'%}"  name='q'>
+    <td> Pick-up location: </td>
     <tr>
       <select value='Brooklyn' name='location'>
+        {% for location in my_locations%}
+        <option value={{location.offices_id}}>{{location.city}} </option>
+        {% endfor %}
+      </select>
+    </tr>
+    </br>
+    <td> Drop-off location: </td>
+    <tr>
+      <select value='Brooklyn' name='location2'>
         {% for location in my_locations%}
         <option value={{location.offices_id}}>{{location.city}} </option>
         {% endfor %}

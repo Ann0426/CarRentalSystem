@@ -3,7 +3,11 @@
 {% block content %}
 {% for car in car %}
 {% for rent in rent %}
-<h1>Booking Car_id  {{ car.vehicle_id }}</h1>
+{% for location in location %}
+{% for location2 in location2 %}
+
+
+<h1>Booking Information</h1>
 <form name='invoices'action="{% url 'invoices' %}" >
     <table >
         <tr>
@@ -19,12 +23,33 @@
           <th>{{dates.today}}</th>
         </tr> 
         <tr>
-          <th>rate/day:  </th>
+          <th>Pick-up location: </th>
+          <th>{{location.address}}<span>,</span></th>
+          <th>{{location.city}}<span>,</span></th>
+          <th>{{location.state}}</th>
+        </tr>
+        <tr>
+          <th> Return location: </th>
+          <th>{{location2.address}}<span>,</span></th>
+          <th>{{location2.city}}<span>,</span></th>
+          <th>{{location2.state}}</th>
+        </tr>
+        <tr>
+          <th>rate/day:   </th>
           <th>{{rent.rent_charge}}</th>
+        </tr>
+        <tr>
+          <th>From:  </th>
+          <th>{{start_date}}</th>
+        </tr>
+        <tr>
+          <th>To:  </th>
+          <th>{{end_date}}</th>
         </tr>
         
     </table> 
-    {% endfor %}{% endfor %}
+    {% endfor %}{% endfor %}{% endfor %}{% endfor %}
+    
     <input name="coupon" type="text" placeholder="input coupun id...">
 
     </br>

@@ -12,8 +12,7 @@ from django.shortcuts import render, redirect
 from .utils import get_office_locations
 from django.apps import apps
 from .utils import get_dates
-from .utils import get_available_cars, get_car_info, get_car_class_info,get_coupon_info
-# from django.views.generic import CreateView
+from .utils import get_available_cars, get_car_info, get_car_class_info,get_coupon_info,get_location_info,calculate_total
 # from django.views.generic import DetailView
 from django.views.generic import TemplateView, ListView
 # from car.models import Booking
@@ -24,7 +23,11 @@ from django.contrib.auth.models import User
 
 connection = apps.get_app_config('car').connection
 
-
+start_date = ""
+end_date = ""
+car = []
+location = []
+location2 = []
 def home(request):
     if request.method == 'GET':
         location_list = get_office_locations(connection)
@@ -52,32 +55,45 @@ def signup(request):
 
 
 def search(request):
+    global start_date,end_date,location,location2
     location = request.GET['location']
+    location2 = request.GET['location2']
     start_date = request.GET['Start']
     end_date = request.GET['end']
     cars = get_available_cars(connection, location, 'all')
+    location = get_location_info(connection,location)
+    location2 = get_location_info(connection,location2)
     print(cars)
+    
     start_date = start_date.split(' ', 1 )[0] 
     end_date = end_date.split(' ', 1 )[0]
+    print(start_date)
+    print(end_date)
+    print(type(start_date))
 
     return render(request, 'car/search.html', {"cars": cars})
 
-
 def booking(request):
-        car = request.GET['car']
+    
+        global car,car_info,car_rent 
+        car = request.GET['BOOK']
         car_info = get_car_info(connection,car)
         if 'type_id' in car_info[0]:
             car_rent = get_car_class_info(connection,car_info[0]['type_id'])
         current_user = request.user
         print(car_info)
+        print(type(car_rent[0]['rent_charge']))
         
-        return render(request, 'car/new_booking.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent}  )
+        return render(request, 'car/new_booking.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent , "start_date":start_date,"end_date":end_date,"location":location,"location2":location2}  )
+        
 def invoices(request):
     coupon = request.GET['coupon']
     coupon_amount = get_coupon_info(connection,coupon)
     print(coupon_amount)
     current_user = request.user
-    return render(request, 'car/invoices.html', {"user":current_user, "coupon":coupon_amount})
+    total_amount = calculate_total(start_date,end_date,coupon_amount[0]['discount'],car_rent[0]['rent_charge'])
+    return render(request, 'car/invoices.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent ,"coupon":coupon_amount,"start_date":start_date,"end_date":end_date,"total_amount":total_amount,})
+    
  
 
 

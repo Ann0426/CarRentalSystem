@@ -63,6 +63,13 @@ def get_available_cars(connection, location, type):
         result[i]['model'] = result[i]['model'].title()
         result[i]['make'] = result[i]['make'].title()
     return result
+def get_location_info(connection,location):
+    query = 'select * from offices where offices_id = {}'.format(location)
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
 
 
 def get_car_info(connection,car):
@@ -84,6 +91,8 @@ def get_car_class_info(connection,type_id):
 
 
 def get_coupon_info(connection,coupon_id):
+    if coupon_id == "":
+        return [{'discount': 100, 'coupon_id': " null"}]
     query = 'select discount, coupon_id from discounts where coupon_id = {}'.format(coupon_id)
     print(query)
     with connection.cursor() as cursor:
@@ -112,3 +121,16 @@ def insert_dummy_data(connection):
     with connection.cursor() as cursor:
         cursor.execute(query)
     connection.commit()
+def calculate_total(startdate,enddate,coupon,rent_charge):
+    date_format = "%Y-%m-%d"
+    enddate = datetime.strptime(enddate, date_format)
+    startdate =  datetime.strptime(startdate, date_format)
+    delta =  enddate - startdate 
+    days = delta.days
+    return (100.00-float(coupon))*float(days)*float(rent_charge)*0.01
+
+    
+
+
+
+

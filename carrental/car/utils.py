@@ -65,7 +65,9 @@ def get_available_cars(connection, location, type):
         result[i]['model'] = result[i]['model'].title()
         result[i]['make'] = result[i]['make'].title()
     return result
-def get_location_info(connection,location):
+
+
+def get_location_info(connection, location):
     query = 'select * from offices where offices_id = {}'.format(location)
     print(query)
     with connection.cursor() as cursor:
@@ -74,7 +76,7 @@ def get_location_info(connection,location):
     return result
 
 
-def get_car_info(connection,car):
+def get_car_info(connection, car):
     query = 'select * from vehicles where vehicle_id = {}'.format(car)
     print(query)
     with connection.cursor() as cursor:
@@ -92,9 +94,9 @@ def get_car_class_info(connection,type_id):
     return result
 
 
-def get_coupon_info(connection,coupon_id):
+def get_coupon_info(connection, coupon_id):
     if coupon_id == "":
-        return [{'discount': 100, 'coupon_id': " null"}]
+        return [{'discount': 0, 'coupon_id': " null"}]
     query = 'select discount, coupon_id from discounts where coupon_id = {}'.format(coupon_id)
     print(query)
     with connection.cursor() as cursor:
@@ -112,8 +114,8 @@ def get_query_response(connection, query):
 
 def get_dates():
     dates = {
-        'today': str(datetime.date(datetime.now())),
-        'tomorrow': str(datetime.date(datetime.now()) + timedelta(days=1))
+        'today': str(datetime.date(datetime.now()) + timedelta(days=1)),
+        'tomorrow': str(datetime.date(datetime.now()) + timedelta(days=2))
     }
     return dates
 
@@ -123,7 +125,9 @@ def insert_dummy_data(connection):
     with connection.cursor() as cursor:
         cursor.execute(query)
     connection.commit()
-def calculate_total(startdate,enddate,coupon,rent_charge):
+
+
+def calculate_total(startdate, enddate, coupon, rent_charge):
     date_format = "%Y-%m-%d"
     enddate = datetime.strptime(enddate, date_format)
     startdate =  datetime.strptime(startdate, date_format)
@@ -131,8 +135,20 @@ def calculate_total(startdate,enddate,coupon,rent_charge):
     days = delta.days
     return (100.00-float(coupon))*float(days)*float(rent_charge)*0.01
 
+
+def generate_cust_id(connection):
+    query = 'select max(cust_id) from customer'
+    with connection.cursor as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
     
 
-
-
-
+def create_rental(connection, info):
+    query = "insert into rentals values({},STR_TO_CHAR('{}','%Y/%m/%d'),STR_TO_CHAR('{}','%Y/%m/%d'),{}, ,{},{},{},{}," \
+            "{},{},{},{},{})".format(info['rental_id'], info['pickup_date'], info['dropoff_date'], info['start_odometer'],
+                                     150, info['rental_id'], info['coupon_id'], info['vehicle_id'], info['cust_id'],
+                                     info['pickup_office'],info['dropoff_office'])
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+    connection.commit()

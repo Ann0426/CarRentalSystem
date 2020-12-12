@@ -101,6 +101,23 @@ def invoices(request):
     print(coupon_amount)
     current_user = request.user
     total_amount = calculate_total(start_date, end_date,coupon_amount[0]['discount'],car_rent[0]['rent_charge'])
+    invoice_id = get_invoice_id(connection) + 1
+    #invoice_id = result + 1
+    create_invoice(connection, invoice_id, end_date, total_amount)
+    info = {
+        'rental_id': generate_rental_id(connection) + 1,
+        #'rental_id': 1,
+        'invoice_id': invoice_id,
+        'pickup_date': start_date,
+        'dropoff_date': end_date,
+        'coupon_id': coupon,
+        'vehicle_id': car_info[0]['vehicle_id'],
+        'cust_id': 1,
+        'pickup_office': int(location[0]['offices_id']),
+        'dropoff_office': int(location2[0]['offices_id']),
+    }
+    print(info)
+    create_rental(connection, info)
     return render(request, 'car/invoices.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent ,"coupon":coupon_amount,"start_date":start_date,"end_date":end_date,"total_amount":total_amount,})
 
 

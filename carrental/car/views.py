@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import Http404
 import datetime
 # from django.contrib.auth.models import User
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileForm
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from .utils import *
@@ -45,8 +45,10 @@ def about(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        if form.is_valid():
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if form.is_valid() and profile_form.is_valid():
             form.save()
+            profile_form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -55,7 +57,9 @@ def signup(request):
             return redirect('/')
     else:
         form = SignUpForm()
-    return render(request, 'car/signup.html', {'form': form})
+        print(type(request.user))
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'car/signup.html', {'form': form,'profile_form': profile_form})
 
 
 def search(request):

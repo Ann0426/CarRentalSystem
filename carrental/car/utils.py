@@ -96,7 +96,7 @@ def get_car_class_info(connection,type_id):
 
 def get_coupon_info(connection, coupon_id):
     if coupon_id == "":
-        return [{'discount': 0, 'coupon_id': " null"}]
+        return [{'discount': 0, 'coupon_id': 0}]
     query = 'select discount, coupon_id from discounts where coupon_id = {}'.format(coupon_id)
     print(query)
     with connection.cursor() as cursor:
@@ -122,6 +122,57 @@ def get_dates():
 
 def insert_dummy_data(connection):
     query = "insert into discounts values (11, 35, STR_TO_DATE('01/01/2021', '%d/%m/%y'),STR_TO_DATE('01/05/2021', '%d/%m/%y'))"
+
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+    connection.commit()
+
+
+def generate_cust_id(connection):
+    query = 'select max(cust_id) from customer'
+    with connection.cursor as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return result
+
+
+def generate_rental_id(connection):
+    with connection.cursor() as cursor:
+        query = "select max(rental_id) from rentals"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+    print(result)
+    return result[0]['max(rental_id)']
+
+
+def get_invoice_id(connection):
+    with connection.cursor() as cursor:
+        query = "select max(invoice_id) from invoice"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+    print(result)
+    return result[0]['max(invoice_id)']
+
+
+def create_rental(connection, info):
+    query = "insert into rentals values({},STR_TO_DATE('{}','%Y-%m-%d'),STR_TO_DATE('{}','%Y-%m-%d'),null, null,{},{},{},{},{},{},{})".format(
+        info['rental_id'], info['pickup_date'], info['dropoff_date'], 150, info['invoice_id'], info['coupon_id'],
+        info['vehicle_id'], info['cust_id'], info['pickup_office'], info['dropoff_office'])
+    print(query)
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+    connection.commit()
+
+
+def create_invoice(connection, invoice_id, end_date, total_amount):
+    start_date = str(datetime.date(datetime.now()))
+    print(start_date)
+    print(end_date)
+    query = "insert into invoice values({},STR_TO_DATE('{}','%Y-%m-%d'), STR_TO_DATE('{}','%Y-%m-%d'), {})".format(
+        invoice_id, start_date, end_date, total_amount)
+    print(query)
     with connection.cursor() as cursor:
         cursor.execute(query)
     connection.commit()
@@ -131,24 +182,6 @@ def calculate_total(startdate, enddate, coupon, rent_charge):
     date_format = "%Y-%m-%d"
     enddate = datetime.strptime(enddate, date_format)
     startdate =  datetime.strptime(startdate, date_format)
-    delta =  enddate - startdate 
+    delta = enddate - startdate
     days = delta.days
     return (100.00-float(coupon))*float(days)*float(rent_charge)*0.01
-
-
-def generate_cust_id(connection):
-    query = 'select max(cust_id) from customer'
-    with connection.cursor as cursor:
-        cursor.execute(query)
-        result = cursor.fetchall()
-    return result
-    
-
-def create_rental(connection, info):
-    query = "insert into rentals values({},STR_TO_CHAR('{}','%Y/%m/%d'),STR_TO_CHAR('{}','%Y/%m/%d'),{}, ,{},{},{},{}," \
-            "{},{},{},{},{})".format(info['rental_id'], info['pickup_date'], info['dropoff_date'], info['start_odometer'],
-                                     150, info['rental_id'], info['coupon_id'], info['vehicle_id'], info['cust_id'],
-                                     info['pickup_office'],info['dropoff_office'])
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-    connection.commit()

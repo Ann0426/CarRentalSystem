@@ -157,7 +157,7 @@ def get_invoice_id(connection):
 
 
 def create_rental(connection, info):
-    query = "insert into rentals values({},STR_TO_DATE('{}','%Y-%m-%d'),STR_TO_DATE('{}','%Y-%m-%d'),null, null,{},{},{},{},{},{},{})".format(
+    query = "insert into rentals values({},STR_TO_DATE('{}','%Y-%m-%d'),STR_TO_DATE('{}','%Y-%m-%d'),null, null,{},{},{},{},{},{},{}, 0)".format(
         info['rental_id'], info['pickup_date'], info['dropoff_date'], 150, info['invoice_id'], info['coupon_id'],
         info['vehicle_id'], info['cust_id'], info['pickup_office'], info['dropoff_office'])
     print(query)
@@ -178,10 +178,10 @@ def create_invoice(connection, invoice_id, end_date, total_amount):
     connection.commit()
 
 
-def calculate_total(startdate, enddate, coupon, rent_charge):
+def calculate_total(start_date, end_date, coupon, rent_charge):
     date_format = "%Y-%m-%d"
-    enddate = datetime.strptime(enddate, date_format)
-    startdate =  datetime.strptime(startdate, date_format)
-    delta = enddate - startdate
+    end_date = datetime.strptime(end_date, date_format)
+    start_date = datetime.strptime(start_date, date_format)
+    delta = end_date - start_date
     days = delta.days
     return (100.00-float(coupon))*float(days)*float(rent_charge)*0.01

@@ -71,11 +71,13 @@ def search(request):
     global connection
     if not connection.open:
         connection = create_connection()
-    cars = get_available_cars(connection, location, 'all')
+    cars = get_available_cars(connection, location, start_date, end_date)
+    if len(cars) == 0:
+        return HttpResponse("NO cars available, try other dates")
     location = get_location_info(connection, location)
     location2 = get_location_info(connection, location2)
-    start_date = start_date.split(' ', 1 )[0]
-    end_date = end_date.split(' ', 1 )[0]
+    start_date = start_date.split(' ', 1)[0]
+    end_date = end_date.split(' ', 1)[0]
     request.session['location'] = location
     request.session['location2'] = location2
     request.session['start_date'] = start_date

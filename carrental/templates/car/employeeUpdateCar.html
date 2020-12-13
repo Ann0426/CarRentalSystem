@@ -54,7 +54,11 @@
 
     <tr>
       <td> vehicle type: </td>
-      <td> <input name="vehicle_type" type="text" placeholder="enter vehicle_type"> </td>
+      <select value='Type' name='vehicle_type'>
+      {% for type in types%}
+        <option value={{type.type_id}}>{{type.type}} </option>
+        {% endfor %}
+      </select>
     </tr>
     </br>
 

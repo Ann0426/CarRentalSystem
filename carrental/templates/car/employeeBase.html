@@ -13,14 +13,16 @@
   <div class=container>
     <ul class= "nav navbar-nav">
       <li><a class="navbar-brand" href="{% url 'employeeHome' %}">Update Car</a></li>
-      {% comment %} <li><a class="navbar-brand" href="{% url 'search_results'  %}">Search Result</a></li>  {% endcomment %}
-      {% comment %} <li><a class="navbar-brand" href="{% url 'UpdateStatus' %}">Update Status</a></li> {% endcomment %}
-      {% comment %} <li><a class="navbar-brand" href="{% url 'signUp' %}">Sign-Up</a></li>
-      <li><a class="navbar-brand" href="{% url 'login' %}">Login</a></li>
-      <li><a class="navbar-brand" href="{% url 'logout' %}">Logout</a></li> {% endcomment %}
+     <li><a class="navbar-brand" href="{% url 'corpadd' %}">Add Corporate Customer</a></li>
+      <li><a class="navbar-brand" href="{% url 'corpcustadd' %}">Add Corporation</a></li>
+      <li><a class="navbar-brand" href="{% url 'rentaltakeout' %}">Checkout Car</a></li>
 
      
     </ul>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a class="navbar-brand" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
   </div>
 </nav> 
 

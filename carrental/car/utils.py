@@ -48,15 +48,12 @@ def get_office_locations(connection):
     return result
 
 
-def get_available_cars(connection, location, type):
-    if type == 'all':
-        query = 'select vehicle_id, model, make, year, type, rent_charge from vehicles JOIN vehicle_class on ' \
-                'vehicles.type_id=vehicle_class.type_id where office_id={} '\
-            .format(location)
-    else:
-        query = query = 'select vehicle_id, model, make, year, type, rent_charge from vehicles JOIN vehicle_class on ' \
-                'vehicles.type_id=vehicle_class.type_id where office_id={} and type={}'\
-            .format(location, type)
+def get_available_cars(connection, location, start_date, end_date):
+    query = "select vehicle_id, model, make, year, type, rent_charge from vehicles JOIN vehicle_class on " \
+            "vehicles.type_id=vehicle_class.type_id where office_id={} and vehicle_id not in (select distinct(vehicle_id) " \
+            "from rentals where (str_to_date('{}','%Y-%m-%d') NOT BETWEEN pickup_date and dropoff_date) and (str_to_date('{}','%Y-%m-%d') " \
+            "NOT BETWEEN pickup_date and dropoff_date))".format(location, start_date, end_date)
+
     with connection.cursor() as cursor:
         cursor.execute(query)
         result = cursor.fetchall()

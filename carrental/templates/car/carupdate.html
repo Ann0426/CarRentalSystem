@@ -1,0 +1,71 @@
+{% extends "car/employeeBase.html" %}
+
+
+{% block content %}
+ {%for vehicle in vehicle%}
+ {% for vehicleclass in vehicleclass %}
+{% comment %} {% for rent in rent %} {% endcomment %}
+
+    <em>You have successfully added a car</em>
+    
+    <table >
+        <tr>
+          <th>new vehicle office:  </th>
+          <th>{{vehicle.updatelocation:}} </th>
+        </tr>
+        <tr>
+          <th>vehicle_id:  </th>
+          <th>{{vehicle.vehicle_id:}} </th>
+        </tr>
+        <tr>
+          <th>Model:  </th>
+          <th>{{ vehicle.vehicle_model }}</th>
+        </tr>
+        <tr>
+          <th>Make:  </th>
+          <th>{{vehicle.vehicle_make}}</th>
+        </tr>
+        <tr>
+          <th>Vin:  </th>
+          <th>{{vehicle.vehicle_vin}}</th>
+        </tr>
+        <tr>
+          <th>Vehicle year:  </th>
+          <th>{{vehicle.vehicle_year}}</th>
+        </tr> 
+        <tr>
+          <th>vehicle license_plate_no:  </th>
+          <th>{{vehicle.vehicle_license_plate_no}}</th>
+        </tr>
+        <tr>
+          <th>vehicle availability:  </th>
+         
+          <th>{{vehicle.available}}</th>
+
+        </tr>
+        <tr>
+          <th>vehicle type_id:  </th>
+          <th>{{vehicleclass.vehicle_type_id}}</th>
+        </tr>
+        <tr>
+          <th> vehicle type:  </th>
+          <th>{{vehicleclass.vehicle_type}}</th>
+        </tr>
+        <tr>
+          <th> vehicle charge:  </th>
+          <th>{{vehicleclass.vehicle_charge}}</th>
+        </tr>
+        <tr>
+          <th>vehicle extra charge:   </th>
+          <th>{{vehicleclass.vehicle_extra_charge}}</th>
+        </tr>
+        <tr>
+          <th>Adding date:  </th>
+          <th >{{dates.today}}</th>
+        </tr> 
+    </table>
+    {%endfor%} {%endfor%}
+    
+    
+
+{% endblock %} 

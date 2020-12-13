@@ -2,7 +2,7 @@
 {% extends "car/base.html" %}
 {% block content %}
 <h1>User Profile</h1>
-    <!--<form   action="{% url 'editprofile'%}" name='edit'>-->
+    <form   action="{% url 'profile'%}" name='edit'>
     <table >
         <tr>
           <th>Username:  </th>
@@ -31,5 +31,5 @@
         </tr>
         {% endif %}
     </table>
-     <!--   <input type="submit" value="Edit"> -->
+        <input type="submit" value="Submit">
         {% endblock %}

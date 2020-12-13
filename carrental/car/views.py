@@ -187,10 +187,20 @@ def make_payment(request):
 
 @login_required(login_url='/login/')
 def profile(request):
-
-    return render(request, 'car/profile.html')
+    user = Customer.objects.all().filter(username=request.user)
+    print(request.user)
+    print(user[0])
+    userid = user[0].custid
+    print(userid)
+    global connection
+    if not connection.open:
+        connection = create_connection()
+    info = get_user_info(connection, userid)
+    print(info)
+    info['username'] = request.user
+    return render(request, 'car/profile.html', {'info':info})
 
 
 def editprofile(request):
-
+    user_info = request.session['user_info']
     return render(request, 'car/editprofile.html' )

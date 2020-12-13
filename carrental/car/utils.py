@@ -212,3 +212,11 @@ def create_payment(connection, amount, invoice_id):
         print(query)
         cursor.execute(query)
     connection.commit()
+
+
+def get_user_info(connection, userid):
+    with connection.cursor() as cursor:
+        query = "select * from customer join address on customer.address_id=address.address_id where cust_id={}".format(int(userid))
+        cursor.execute(query)
+        result = cursor.fetchall()[0]
+    return result

@@ -1,5 +1,6 @@
 from django.urls import path
 
-from .views import login
+from .views import employeeHome,UpdateCar
 urlpatterns = [
-    path('',login , name="employee_login" ),]
+    path('',employeeHome , name="employeeHome" ),
+    path('UpdateCar/',UpdateCar , name="UpdateCar" )]

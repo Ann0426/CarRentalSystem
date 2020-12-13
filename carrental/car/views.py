@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import Http404
 import datetime
 # from django.contrib.auth.models import User
-from .forms import SignUpForm, ProfileForm
+from .forms import SignUpForm
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from .utils import *

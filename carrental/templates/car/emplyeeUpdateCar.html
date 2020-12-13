@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+
+{% extends "car/employeeBase.html" %}
+{% load static %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<h1><center>Update Car</center></h1>
+
+  
+  <h2> Add new vehicle</h2>
+  <form   action="{% url 'UpdateCar'%}" name='updatecar'>
+    <td> new vehicle office: </td>
+    <tr>
+      <select value='Brooklyn' name='updatelocation'>
+        {% for location in my_locations%}
+        <option value={{location.offices_id}}>{{location.city}} </option>
+        {% endfor %}
+      </select>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle_id: </td>
+      <td> <input name="vehicle_id" type="text" placeholder="enter vehicle_id"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle model: </td>
+      <td> <input name="vehicle_model" type="text" placeholder="enter vehicle_model"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle make: </td>
+      <td> <input name="vehicle_make" type="text" placeholder="enter vehicle_make"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle vin: </td>
+      <td> <input name="vehicle_vin" type="text" placeholder="enter vehicle_vin"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle year: </td>
+      <td> <input name="vehicle_year" type="text" placeholder="enter vehicle_year"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle license_plate_no: </td>
+      <td> <input name="vehicle_license_plate_no" type="text" placeholder="enter vehicle_license_plate_no"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle availability: </td>
+      <td><input type="radio" id="available" name="available" value="yes">
+        <label for="available">Yes</label>
+        <input type="radio" id="notavailable" name="available" value="no">
+        <label for="notavailable">No</label></td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle type_id: </td>
+      <td> <input name="vehicle_type_id" type="text" placeholder="enter vehicle_type_id"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle type: </td>
+      <td> <input name="vehicle_type" type="text" placeholder="enter vehicle_type"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle charge: </td>
+      <td> <input name="vehicle_charge" type="text" placeholder="enter vehicle_charge"> </td>
+    </tr>
+    </br>
+    <tr>
+      <td> vehicle extra charge: </td>
+      <td> <input name="vehicle_extra_charge" type="text" placeholder="enter vehicle_extra_charge"> </td>
+    </tr>
+    </br>
+    </br>
+    <tr>
+        <th>Adding date:  </th>
+        <th name='date'>{{dates.today}}</th>
+    </tr> 
+    </br>
+    <input type="submit" value="Add a car">
+  </form>
+        
+
+{% endblock %}

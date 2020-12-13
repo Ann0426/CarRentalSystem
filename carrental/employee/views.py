@@ -26,7 +26,9 @@ connection = apps.get_app_config('car').connection
 def employeeHome(request):
     location_list = get_office_locations(connection)
     
-    return render(request, 'car/emplyeeUpdateCar.html',{"my_locations": location_list, "dates": get_dates()})
+    return render(request, 'car/employeeUpdateCar.html',{"my_locations": location_list, "dates": get_dates()})
+
+
 def UpdateCar(request):
    
     updatelocation =  request.GET['updatelocation']
@@ -51,7 +53,7 @@ def UpdateCar(request):
     print("vehicle_license_plate_no",vehicle_license_plate_no)
     print("vehicle_charge",vehicle_charge)
     print("vehicle_extra_charge ",vehicle_extra_charge)
-    print("date",date)
+    print("date", date)
     
     
     create_car(connection, updatelocation, 
@@ -59,5 +61,5 @@ def UpdateCar(request):
     vehicle =get_car_info(connection, vehicle_id)
     print("vehicle" ,vehicle)
     vehicleclass = get_car_class_info(connection,vehicle[0]['type_id'])
-    print("vehiclclass" ,vehicleclass)
+    print("vehicleclass" ,vehicleclass)
     return render(request, 'car/carupdate.html',{"vehicleclass": vehicleclass , "vehicle": vehicle ,"dates": get_dates()})

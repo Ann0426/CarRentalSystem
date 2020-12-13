@@ -1,1 +1,8 @@
  {% extends "car/base.html" %}
+{% block content %}
+ <form name="payment" action="{% url 'final' %}" xmlns="http://www.w3.org/1999/html">
+    <em> Please pay the amount: </em> <input name="paid" type="number" placeholder={{minimum}} min={{minimum}} max={{maximum}}></input>
+ <br>
+ <input type="submit"  value="Complete Payment" />
+    </form>
+ {% endblock%}

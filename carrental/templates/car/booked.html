@@ -2,12 +2,11 @@
 
 
 {% block content %}
- {%for discounts in coupon%}
+  {%for discounts in coupon%}
  {% for car in car %}
 
-    <em>You have successfully created a booking for this car. Please find details below.</em>
-<form name='invoices'action="{% url 'payment' %}" >
-    <table >
+    <em>You have successfully created a booking for this car. Here's your invoice.</em>
+ <table >
         <tr>
           <th>User:  </th>
           <th>{{user.username}} </th>
@@ -27,16 +26,16 @@
         <tr>
           <th>Booking date:  </th>
           <th>{{dates}}</th>
-        </tr> 
+        </tr>
         <tr>
           <th>Coupon id:  </th>
           <th>{{discounts.coupon_id}}</th>
-         
+
 
         </tr>
         <tr>
           <th>Coupon discount:  </th>
-         
+
           <th>{{discounts.discount}}</th>
 
         </tr>
@@ -45,17 +44,14 @@
           <th>{{total_amount}}</th>
         </tr>
         <tr>
+            <th>Amount Paid:</th>
+            <th>{{amount_paid}}</th>
+        </tr>
+        <tr>
           <th>Last payment date:  </th>
           <th>{{end_date}}</th>
         </tr>
+{%endfor%}{%endfor%}
 
-        
-        
-    </table>
 
-    <input type="submit"  value="Make Payment" />
-    {%endfor%} {%endfor%}
-    
-    
-
-{% endblock %} 
+{% endblock %}

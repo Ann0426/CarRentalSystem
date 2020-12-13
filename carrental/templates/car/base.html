@@ -13,12 +13,16 @@
     <ul class= "nav navbar-nav">
       <li><a class="navbar-brand" href="{% url 'home' %}">Home</a></li>
       <li><a class="navbar-brand" href="{% url 'about' %}">About</a></li>
-      <li><a class="navbar-brand" href="{% url 'signUp' %}">Sign-Up</a></li>
-      <li><a class="navbar-brand" href="{% url 'login' %}">Login</a></li>
-      <li><a class="navbar-brand" href="{% url 'logout' %}">Logout</a></li>
+
 
      
     </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a class="navbar-brand" href="{% url 'profile' %}">Profile</a></li>
+      <li><a class="navbar-brand" href="{% url 'signUp' %}">Sign-Up</a></li>
+      <li><a class="navbar-brand" href="{% url 'login' %}">Login</a></li>
+      <li><a class="navbar-brand" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
   </div>
 </nav> 
 

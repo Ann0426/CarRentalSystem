@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends "car/base.html" %}
+{% block content %}
+<em>User Profile</em>
+    <form   action="{% url 'editprofile'%}" name='edit'>
+    <table >
+        <tr>
+          <th>Username:  </th>
+          <th>{{info.username}} </th>
+        </tr>
+        <tr>
+          <th>First Name:  </th>
+          <th>{{info.first_name}} </th>
+        </tr>
+        <tr>
+          <th>Last Name:  </th>
+          <th>{{ info.last_name }}</th>
+        </tr>
+        <tr>
+          <th>Address </th>
+          <th>{{info.address}}</th>
+        </tr>
+        <input type="submit" value="Edit">
+        {% if info.type %}
+        <tr>
+          <th>Corporation </th>
+          <th>{{info.corporation}}</th>
+        </tr>
+        {% endif %}
+    </table>
+        {% endblock %}

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls import url
 
 from django.conf.urls.static import static
-from .views import search, home, about, signup, booking, invoices, make_payment
+from .views import search, home, about, signup, booking, invoices, make_payment, profile, editprofile, final_invoice
 # from car.views import CarDetailsView
 # from car.views import NewBookingView
 # from car.views import HomeView
@@ -18,7 +18,10 @@ urlpatterns = [
     path('search/', search, name='search_results'),
     path('booking/', booking, name='new_booking'),
     path('invoices/', invoices, name='invoices'),
+    path('final/', final_invoice, name='final'),
     path('payment/', make_payment, name='payment'),
+    path('profile/', profile, name='profile'),
+    path('editprofile',editprofile, name= 'editprofile'),
     # path('logout/$', auth_views.LogoutView(template_name="logged_out.html"), name='logout'),
     # path('^logout/$', auth_views.LogoutView, {'next_page': 'car/home.html'}, name='logout'),
     path('signUp/', signup, name="signUp")]

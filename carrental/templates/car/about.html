@@ -6,4 +6,31 @@
 {% block content %}
 
 <h1>About Us:</h1><p>With CarRent, you can easily find a car you want!!</p>
+
+<h2>Contact Us:</h2>
+{% for location in my_locations%}
+ <table >
+        <tr>
+          <th>{{location.address}} </th>
+        </tr>
+        <tr>
+          <th>{{ location.city }}</th>
+        </tr>
+        <tr>
+          <th>{{location.state}}</th>
+        </tr>
+        <tr>
+          <th>{{location.country}}</th>
+        </tr>
+        <tr>
+          <th>{{location.zipcode}}</th>
+        </tr>
+        <tr>
+          <th>{{location.phone_number}}</th>
+
+
+    </table>
+<br>
+<br>
+{%endfor%}
 {% endblock %}

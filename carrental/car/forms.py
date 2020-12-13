@@ -19,3 +19,4 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'birth_date', 'first_name', 'last_name', 'email', 'password1', 'password2',)
 
 
+

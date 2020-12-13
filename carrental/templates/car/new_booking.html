@@ -2,7 +2,6 @@
 
 {% block content %}
 {% for car in car %}
-{% for rent in rent %}
 {% for location in location %}
 {% for location2 in location2 %}
 
@@ -36,7 +35,7 @@
         </tr>
         <tr>
           <th>rate/day:   </th>
-          <th>{{rent.rent_charge}}</th>
+          <th>{{car.rent_charge}}</th>
         </tr>
         <tr>
           <th>From:  </th>
@@ -48,7 +47,7 @@
         </tr>
         
     </table> 
-    {% endfor %}{% endfor %}{% endfor %}{% endfor %}
+    {% endfor %}{% endfor %}{% endfor %}
     
     <input name="coupon" type="text" placeholder="Enter coupon id...">
 

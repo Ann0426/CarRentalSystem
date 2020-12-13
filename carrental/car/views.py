@@ -33,6 +33,9 @@ car_info = []
 
 def home(request):
     if request.method == 'GET':
+        global connection
+        if not connection.open:
+            connection = create_connection()
         location_list = get_office_locations(connection)
 
     return render(request, 'car/home.html', {"my_locations": location_list, "dates": get_dates()})
@@ -65,6 +68,11 @@ def search(request):
     location2 = request.GET['location2']
     start_date = request.GET['start']
     end_date = request.GET['end']
+    request.session['location'] = location
+    request.session['location2'] = location2
+    global connection
+    if not connection.open:
+        connection = create_connection()
     cars = get_available_cars(connection, location, 'all')
     location = get_location_info(connection, location)
     location2 = get_location_info(connection, location2)
@@ -81,15 +89,20 @@ def search(request):
 @login_required(login_url='/login/')
 def booking(request):
     global car_rent, car_info
+    global connection
     car = request.GET['BOOK']
+    request.session['vehicle_id'] = car
     if request.user.is_authenticated:
+        if not connection.open:
+            connection = create_connection()
         car_info = get_car_info(connection, car)
 
-    if 'type_id' in car_info[0]:
-        car_rent = get_car_class_info(connection, car_info[0]['type_id'])
+    if not connection.open:
+        connection = create_connection()
+    car_rent = get_car_class_info(connection, car_info[0]['type_id'])
+    car_info[0]['rent_charge'] = float(car_rent[0]['rent_charge'])
+    request.session['vehicle_info'] = car_info[0]
     current_user = request.user
-    print(car_info)
-    print(type(car_rent[0]['rent_charge']))
         
     return render(request, 'car/new_booking.html', {"car": car_info, "user":current_user,"dates": get_dates(),"rent":car_rent , "start_date":start_date,"end_date":end_date,"location":location,"location2":location2}  )
         
@@ -97,10 +110,16 @@ def booking(request):
 def invoices(request):
 
     coupon = request.GET['coupon']
+    global connection
+    if not connection.open:
+        connection = create_connection()
     coupon_amount = get_coupon_info(connection, coupon)
     print(coupon_amount)
     current_user = request.user
     total_amount = calculate_total(start_date, end_date,coupon_amount[0]['discount'],car_rent[0]['rent_charge'])
+    if coupon == "":
+        coupon = "null"
+    request.session['coupon'] = coupon
     invoice_id = get_invoice_id(connection) + 1
     #invoice_id = result + 1
     create_invoice(connection, invoice_id, end_date, total_amount)
@@ -121,3 +140,6 @@ def invoices(request):
     return render(request, 'car/invoices.html', {"car": car_info,"user":current_user,"dates": get_dates(),"rent":car_rent ,"coupon":coupon_amount,"start_date":start_date,"end_date":end_date,"total_amount":total_amount,})
 
 
+def make_payment(request):
+    print(request.session.items())
+    return render(request, 'car/about.html')

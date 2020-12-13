@@ -1,10 +1,9 @@
 from django.urls import path
-from car import views
 from django.conf import settings
 from django.conf.urls import url
 
 from django.conf.urls.static import static
-from .views import search, home, about, signup, booking, invoices
+from .views import search, home, about, signup, booking, invoices, make_payment
 # from car.views import CarDetailsView
 # from car.views import NewBookingView
 # from car.views import HomeView
@@ -19,6 +18,7 @@ urlpatterns = [
     path('search/', search, name='search_results'),
     path('booking/', booking, name='new_booking'),
     path('invoices/', invoices, name='invoices'),
+    path('payment/', make_payment, name='payment'),
     # path('logout/$', auth_views.LogoutView(template_name="logged_out.html"), name='logout'),
     # path('^logout/$', auth_views.LogoutView, {'next_page': 'car/home.html'}, name='logout'),
     path('signUp/', signup, name="signUp")]

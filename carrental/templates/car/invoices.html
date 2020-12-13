@@ -6,8 +6,8 @@
  {% for car in car %}
 {% comment %} {% for rent in rent %} {% endcomment %}
 
-    <em>You have successfully created a booking for this car. Someone from our staff will contact you shortly.</em>
-    
+    <em>You have successfully created a booking for this car. Please find details below.</em>
+<form name='invoices'action="{% url 'payment' %}" >
     <table >
         <tr>
           <th>User:  </th>
@@ -49,10 +49,12 @@
           <th>Last payment date:  </th>
           <th>{{end_date}}</th>
         </tr>
-        
+
         
         
     </table>
+
+    <input type="submit"  value="Make Payment" />
     {%endfor%} {%endfor%}
     
     
